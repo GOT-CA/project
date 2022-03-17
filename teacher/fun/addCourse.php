@@ -1,0 +1,37 @@
+<?php
+
+require_once("../../config/database.php");
+$cid=$_POST["cid"];
+$cname=$_POST["cname"];
+$credit=$_POST["credit"];
+$address=$_POST["address"];
+$did=$_POST["did"];
+$tid=$_POST["tid"];
+
+if(mysqli_num_rows(mysqli_query($db,"select * from course where cid='$cid'"))>0){
+    echo '<h4 style="margin:30px;">已存在该课程';
+    exit();
+}
+if(mysqli_num_rows(mysqli_query($db,"select * from teacher where tid='$tid'"))<1){
+    echo '<h4 style="margin:30px;">教师工号输入错误';
+    exit();
+}
+
+
+
+$com="insert into course (cid,cname,address,did,credit,flag) values('$cid','$cname','$address','$did','$credit','1')";
+$com1="insert into teaches (cid,tid,flag) values('$cid','$tid','1')";
+
+
+$result=mysqli_query($db,$com);
+$result1=mysqli_query($db,$com1);
+if($result){
+    echo '<h4 style="margin:30px;">提示：已提交申请！</h4>';
+}
+else{
+    echo '<h4 style="margin:30px;">注意：提交申请失败！</h4>';
+}
+
+mysqli_close($db);
+?>
+<div style="width: 90%;height: 55px;margin: 50px"><div style="margin: 0 auto;width: 90px;height: 30px;background-color: #117700"><a style="text-decoration: none;padding:3px;color: #f3f3f3;text-align: center;display: block" href="./myLog.php">返回</a></div> </div>
